@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text" value="3" id="demo">
+</body>
+</html>
+<script type="text/javascript">
+	var obj = document.getElementById("demo");
+
+	// onchange事件，键盘和鼠标改变元素属性，需要鼠标失去焦点之后才触发事件，脚本触发无效
+	obj.onchange = function(){
+		console.log("onchange：" + obj.value);
+	}
+	
+	// onkeypress、onkeyup、onkeydown事件，在处理复制、粘贴、拖拽、长按键（按住键盘不放）等细节上并不完善
+	obj.onkeypress = function(){
+		console.log("onkeypress：" + obj.value)
+	}
+
+	//onpropertychange事件，不需要考虑鼠标是去焦点，只要元素属性改变就会触发事件，但是这个事件IE专属
+	obj.onpropertychange = function(){
+		console.log("onpropertychange：" + obj.value);
+	}
+
+	// oninput事件，是HTML5中的标准事件,只在value改变时触发,oninput要通过addEventListener()来注册,IE9以下的浏览器是不支持oninput事件
+	obj.oninput = function(){
+		console.log("oninput：" + obj.value);
+	}
+
+	//解决办法ie
+	var ie = !!window.ActiveXObject;  
+	if(ie){  
+	    obj.onpropertychange = function(){
+	    	console.log("ie下使用onpropertychange：" + obj.value);
+	    }  
+	}else{  
+	    obj.addEventListener("input",function(){
+	    	console.log("其他浏览器下使用oninput：" + obj.value);
+	    },false);  
+	}
+</script>
